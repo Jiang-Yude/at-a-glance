@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI 為什麼講那麼長 圖解</title>
+<style>
+  :root {
+    --bg: #f7f4ee; --card: #ffffff; --ink: #2a2520; --soft: #6b6259;
+    --line: #ddd5c8; --a: #b5652b; --a-soft: #f6e6d8; --b: #2f6f5e; --b-soft: #e3efea;
+    --tip-bg: #2a2520; --tip-ink: #ffffff;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1d1a17; --card: #27231f; --ink: #efe9e1; --soft: #b5aba0;
+      --line: #3d3832; --a: #e3a06c; --a-soft: #3a2c21; --b: #82c4ae; --b-soft: #263832;
+      --tip-bg: #efe9e1; --tip-ink: #1d1a17;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 32px 16px 80px; background: var(--bg); color: var(--ink);
+    font-family: -apple-system, "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+    font-size: 19px; line-height: 1.75;
+  }
+  .wrap { max-width: 860px; margin: 0 auto; }
+  .answer { font-size: 30px; font-weight: 700; line-height: 1.45; margin: 0 0 6px; }
+  .hint { color: var(--soft); font-size: 18px; margin: 0 0 22px; }
+  figure {
+    margin: 0 0 28px; background: var(--card); border: 1px solid var(--line);
+    border-radius: 16px; padding: 20px;
+  }
+  .scroll { overflow-x: auto; }
+  figure svg { width: 100%; min-width: 700px; height: auto; display: block; }
+  figcaption { font-size: 20px; font-weight: 600; margin-top: 12px; }
+  svg text { font-family: inherit; fill: var(--ink); pointer-events: none; }
+  .box { fill: var(--card); stroke: var(--ink); stroke-width: 2; }
+  .boxA { fill: var(--a-soft); stroke: var(--a); stroke-width: 2.5; }
+  .boxB { fill: var(--b-soft); stroke: var(--b); stroke-width: 2.5; }
+  .arrow { stroke: var(--soft); stroke-width: 2.5; fill: none; marker-end: url(#tip); }
+  .hit { stroke: transparent; stroke-width: 26; fill: none; }   /* 箭頭的隱形感應區，比線粗才好指 */
+  .verb { font-size: 20px; fill: var(--soft); }
+  .big { font-size: 26px; font-weight: 700; }
+  .mid { font-size: 22px; }
+  [data-tip] { cursor: help; outline: none; }
+  svg g[data-tip]:hover rect, svg g[data-tip]:focus rect { filter: brightness(0.94); stroke-width: 3.5; }
+  svg g[data-tip]:hover .arrow, svg g[data-tip]:focus .arrow { stroke: var(--a); stroke-width: 3.5; }
+  #tipbox {
+    position: fixed; z-index: 10; max-width: 320px; padding: 12px 16px; border-radius: 12px;
+    background: var(--tip-bg); color: var(--tip-ink); font-size: 18px; line-height: 1.6;
+    box-shadow: 0 6px 24px rgba(0,0,0,.18); pointer-events: none; opacity: 0; transition: opacity .12s;
+  }
+  #tipbox.on { opacity: 1; }
+  .cards { display: grid; gap: 14px; margin-bottom: 28px; }
+  .cards details {
+    background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 16px 20px;
+  }
+  .cards summary { cursor: pointer; font-size: 20px; font-weight: 600; list-style: none; }
+  .cards summary::-webkit-details-marker { display: none; }
+  .cards summary::after { content: "  ＋"; color: var(--soft); font-weight: 400; }
+  .cards details[open] summary::after { content: "  －"; }
+  .cards details p { margin: 10px 0 0; color: var(--soft); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <marker id="tip" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" style="fill:var(--soft)"/>
+    </marker>
+  </defs>
+</svg>
+
+<p class="answer">AI 的回答常常加了客套、重述和一大堆細節；可以要求它先給答案、最多三點。</p>
+<p class="hint">這是「畫給我看」技能包的示範頁。滑鼠移到框或箭頭上看細節（手機點一下）；卡片點開看更多。</p>
+
+<div class="cards">
+  <details><summary>重點一：長不等於有用</summary><p>開場白、重述問題、「總而言之」這些字，讀的人要花時間，對答案沒有幫助。</p></details>
+  <details><summary>重點二：短也要留住重要的東西</summary><p>數字、「不」「沒有」這類否定詞、會出事的風險，不能為了短就拿掉。</p></details>
+  <details><summary>重點三：複雜的就畫出來</summary><p>文字講不清楚的，簡單的在對話裡畫，複雜的做成一頁像這樣的網頁。</p></details>
+</div>
+
+<figure>
+  <div class="scroll"><svg viewBox="0 0 760 140" role="img" aria-label="AI 回答變長的流程">
+    <g data-tip="你問了一個問題，其實只想知道答案。"><rect class="box" x="10" y="40" width="180" height="64" rx="12"/><text class="big" x="100" y="80" text-anchor="middle">你問問題</text></g>
+    <g data-tip="常見的樣子：先打招呼、重述問題、列出所有可能。"><rect class="boxA" x="290" y="40" width="180" height="64" rx="12"/><text class="big" x="380" y="80" text-anchor="middle">客套加重述</text></g>
+    <g data-tip="結果是一大段，你得自己找答案在哪。"><rect class="box" x="570" y="40" width="180" height="64" rx="12"/><text class="big" x="660" y="80" text-anchor="middle">一大段字</text></g>
+    <g data-tip="沒有限制長度或格式時，回答常會把能想到的都放進來。"><path class="hit" d="M196,72 L284,72"/><path class="arrow" d="M196,72 L284,72"/></g>
+    <text class="verb" x="240" y="58" text-anchor="middle">沒限制</text>
+    <g data-tip="每多一句客套、一次重述，答案就被埋得更深。"><path class="hit" d="M476,72 L564,72"/><path class="arrow" d="M476,72 L564,72"/></g>
+    <text class="verb" x="520" y="58" text-anchor="middle">越寫越多</text>
+  </svg></div>
+  <figcaption>沒有限制格式時，答案容易被客套和細節埋住。</figcaption>
+</figure>
+
+<figure>
+  <div class="scroll"><svg viewBox="0 0 760 170" role="img" aria-label="改之前與改之後">
+    <text class="mid" x="170" y="28" text-anchor="middle" style="fill:var(--soft)">現在</text>
+    <g data-tip="打招呼、重述問題、條列十點、最後總結，答案藏在中間。"><rect class="box" x="10" y="40" width="320" height="110" rx="14"/><text class="big" x="170" y="102" text-anchor="middle">十點加總結</text></g>
+    <g data-tip="加一條規則：第一句就是答案，最多三點，需要時用生活比喻。"><path class="hit" d="M344,95 L414,95"/><path class="arrow" d="M344,95 L414,95"/></g>
+    <text class="mid" x="590" y="28" text-anchor="middle" style="fill:var(--soft)">改了之後</text>
+    <g data-tip="第一句就是答案；想知道更多，再問就好。"><rect class="boxB" x="430" y="40" width="320" height="110" rx="14"/><text class="big" x="590" y="102" text-anchor="middle">一句加三點</text></g>
+  </svg></div>
+  <figcaption>要求先給答案，答案就有機會從中間移到第一句。</figcaption>
+</figure>
+
+<figure>
+  <div class="scroll"><svg viewBox="0 0 760 150" role="img" aria-label="省下的字數比例">
+    <text class="mid" x="10" y="45">自己宣稱</text>
+    <g data-tip="caveman 早期在自己 10 題測試裡宣稱平均省約 65% 輸出 token；作者後來說明這個數字未經驗證。"><rect class="boxA" x="160" y="22" width="364" height="34" rx="6"/></g><text class="mid" x="536" y="47">約 65%</text>
+    <text class="mid" x="10" y="105">別人實測</text>
+    <g data-tip="獨立作者 Kuba Guzik 在結構化任務上測完整版 caveman，只省約 9% 到 13% 輸出 token。"><rect class="boxB" x="160" y="82" width="73" height="34" rx="6"/></g><text class="mid" x="245" y="107">約 9 到 13%</text>
+  </svg></div>
+  <figcaption>省多少要看情境，別只看宣傳數字。</figcaption>
+</figure>
+
+<p class="hint">數字都是輸出 token，都不是本技能包的實測。來源：caveman 早期 README 與其 HONEST-NUMBERS 說明；Kuba Guzik 的獨立測試（Medium）。</p>
+
+</div>
+
+<div id="tipbox" role="tooltip"></div>
+<script>
+  // 滑鼠移到有 data-tip 的框或箭頭就浮出細節；手機點一下顯示、點空白處收起
+  (function () {
+    var box = document.getElementById('tipbox');
+    function show(el, x, y) {
+      box.textContent = el.getAttribute('data-tip');
+      box.classList.add('on');
+      var w = box.offsetWidth, h = box.offsetHeight;
+      var left = Math.min(x + 14, window.innerWidth - w - 8);
+      var top = y + 18 + h > window.innerHeight ? y - h - 12 : y + 18;
+      box.style.left = Math.max(8, left) + 'px';
+      box.style.top = Math.max(8, top) + 'px';
+    }
+    function hide() { box.classList.remove('on'); }
+    document.querySelectorAll('[data-tip]').forEach(function (el) {
+      el.setAttribute('tabindex', '0');
+      el.addEventListener('mousemove', function (e) { show(el, e.clientX, e.clientY); });
+      el.addEventListener('mouseleave', hide);
+      el.addEventListener('click', function (e) { e.stopPropagation(); show(el, e.clientX, e.clientY); });
+      el.addEventListener('focus', function () {
+        var r = el.getBoundingClientRect(); show(el, r.left + r.width / 2, r.bottom);
+      });
+      el.addEventListener('blur', hide);
+    });
+    document.addEventListener('click', hide);
+  })();
+</script>
+</body>
+</html>

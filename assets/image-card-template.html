@@ -1,0 +1,81 @@
+<!DOCTYPE html><html lang="zh-Hant"><head><meta charset="utf-8"><title>主題 圖片版</title><meta name="color-scheme" content="light">
+<style>
+:root{--bg:#fefcf8;--paper:#fff;--ink:#1a1612;--ink-soft:#3a342d;--ink-faint:#6a635a;--line:#d8cdb8;--mint:#4d9c7d;--sky:#5689b8;--sand:#a08144;--coral:#e85a4f}
+*{box-sizing:border-box;margin:0;padding:0}
+body{width:1200px;background:var(--bg);font-family:"PingFang TC","Noto Sans TC",sans-serif;color:var(--ink);padding:48px 56px 56px}
+h1{font-size:34px;font-weight:600}
+.sub{font-size:20px;color:var(--ink-soft);margin-top:10px;line-height:1.6}
+.src{font-size:16px;color:var(--ink-faint);margin-top:6px}
+.sec{margin-top:36px;border-radius:22px;padding:26px 28px 28px}
+.ws{background:#eef6f2;border:2px solid #b9dccd}
+.pm{background:#eef3f9;border:2px solid #bccfe4}
+.sec h2{font-size:26px;font-weight:600}
+.sec .why{font-size:18px;color:var(--ink-soft);margin:6px 0 18px}
+.ws h2{color:#2f6b54}.pm h2{color:#36608a}
+.head,.row{display:grid;grid-template-columns:230px 1fr 260px;gap:0}
+.head div{font-size:15px;color:var(--ink-faint);padding:0 18px 6px}
+.row{background:var(--paper);border:1.5px solid var(--line);border-radius:14px;overflow:hidden}
+.row>div{padding:16px 18px;font-size:18px;line-height:1.6}
+.row .name{border-right:1.5px solid var(--line)}
+.row .out{border-left:1.5px solid var(--line);background:#fbf8f2}
+.badge{display:inline-block;color:#fff;font-weight:600;border-radius:8px;padding:2px 10px;font-size:18px}
+.ws .badge{background:var(--mint)}.pm .badge{background:var(--sky)}
+.t{display:block;font-size:20px;font-weight:600;margin-top:6px}
+.time{display:block;font-size:15px;color:var(--ink-faint);margin-top:4px}
+.tag{display:inline-block;font-size:14px;color:#7a5f2a;background:#f5ecd9;border-radius:6px;padding:1px 8px;margin-top:8px}
+.arrow{text-align:center;font-size:24px;color:var(--ink-faint);line-height:30px}
+.bridge{margin:18px auto 0;text-align:center;font-size:19px;color:var(--ink);background:#fff7e8;border:2px dashed var(--sand);border-radius:14px;padding:14px 20px;width:760px}
+.guard{margin-top:36px;background:#fdf0ee;border:2px solid #f0c1bb;border-radius:22px;padding:22px 28px}
+.guard h2{font-size:24px;color:#a13d35;font-weight:600}
+.guard ul{margin:10px 0 0 22px;font-size:18px;line-height:1.75}
+.foot{margin-top:22px;font-size:15px;color:var(--ink-faint)}
+b{font-weight:600}
+</style></head><body>
+<!--
+  一看就懂：圖片版模板
+  1. 複製本檔，換掉標題、一句話答案、各段內容。
+  2. 每一步一列卡片，三欄：步驟名＋時間｜做什麼（兩三句，含例子）｜帶走什麼。
+  3. 需要標來源時，在「做什麼」底下放 <span class="tag">。
+  4. 只有一段就刪掉第二個 .sec 和 .bridge；步驟不夠就複製 .row 與 .arrow。
+  5. 轉圖（以 Chrome 為例，不開視窗）：
+     chrome --headless=new --hide-scrollbars --force-device-scale-factor=1 --window-size=1200,3000 --screenshot=out.png file:///絕對路徑/本檔.html
+     chrome 換成你電腦上的執行檔：macOS 是 "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"，Linux 常見 google-chrome 或 chromium。
+     先給大高度轉一次，看內容底在哪，再用剛好的高度重轉，切掉下面的空白。
+-->
+<h1>主題：一句話標題</h1>
+<p class="sub">一句話：這張圖要讓人看懂的那一件事。</p>
+<p class="src">出處說明。黃色小標＝這一步用到哪份資料或哪個工具。</p>
+
+<div class="sec ws">
+<h2>第一段：這段的名稱</h2>
+<p class="why">這段在幹嘛，一句話。</p>
+<div class="head"><div>步驟</div><div>做什麼</div><div>帶走什麼</div></div>
+<div class="row"><div class="name"><span class="badge">1</span><span class="t">步驟名</span><span class="time">時間或期間</span></div>
+<div>兩三句說明這一步在做什麼，附一個例子。<br><span class="tag">來源：工具或資料名</span></div>
+<div class="out">這一步的產出</div></div>
+<div class="arrow">↓</div>
+<div class="row"><div class="name"><span class="badge">2</span><span class="t">步驟名</span><span class="time">時間或期間</span></div>
+<div>兩三句說明這一步在做什麼。</div>
+<div class="out">這一步的產出</div></div>
+</div>
+
+<div class="bridge">第一段做完會遇到什麼　→　<b>怎麼接進第二段</b></div>
+
+<div class="sec pm">
+<h2>第二段：這段的名稱</h2>
+<p class="why">這段在幹嘛，一句話。</p>
+<div class="head"><div>階段</div><div>做什麼</div><div>帶走什麼</div></div>
+<div class="row"><div class="name"><span class="badge">1</span><span class="t">階段名</span><span class="time">第幾週</span></div>
+<div>兩三句說明這個階段在做什麼。</div>
+<div class="out">這個階段的產出</div></div>
+</div>
+
+<div class="guard">
+<h2>兩段都要守</h2>
+<ul>
+<li><b>規則一</b>：會出事的風險寫在這裡。</li>
+<li><b>規則二</b>：隱私或資料界線寫在這裡。</li>
+</ul>
+</div>
+<p class="foot">整理：你的名字｜日期｜初稿或定稿</p>
+</body></html>
